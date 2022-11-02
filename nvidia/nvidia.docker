@@ -1,0 +1,38 @@
+ARG OS=ubuntu:18.04
+FROM ${OS}
+MAINTAINER Neil
+CMD ["/bin/bash"];
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Taipei
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update
+RUN apt-get --yes install apt-utils
+RUN apt-get --yes install sudo
+RUN apt-get --yes install git
+RUN apt-get --yes install python
+RUN apt-get --yes install build-essential bc
+RUN apt-get --yes install lbzip2
+RUN apt-get --yes install binutils
+RUN apt-get --yes install cpio
+RUN apt-get --yes install binfmt-support
+RUN apt-get --yes install qemu-user-static
+RUN apt-get --yes install python3
+RUN apt-get --yes install xxd
+
+ARG NAME=docker
+ARG PASSWD=docker
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g $GID -o $NAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $NAME
+RUN usermod -a -G sudo $NAME
+RUN echo "root:$PASSWD" | chpasswd
+RUN echo "$NAME:$PASSWD" | chpasswd
+# Use root bashrc as start-up script,
+# which execute a root permission command "update-binfmts --enable".
+# Then change to normal user to avoid breaking the mount folder's permission.
+RUN echo "update-binfmts --enable" >> /root/.bashrc
+RUN echo "su ${NAME}" >> /root/.bashrc
+#USER $NAME
+WORKDIR /home/$NAME

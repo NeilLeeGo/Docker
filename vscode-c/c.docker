@@ -1,0 +1,28 @@
+# https://hub.docker.com/_/microsoft-vscode-devcontainers
+FROM mcr.microsoft.com/vscode/devcontainers/cpp:ubuntu-20.04 as builder
+MAINTAINER Neil
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Taipei
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# https://code.visualstudio.com/docs/cpp/cmake-linux
+RUN apt-get update
+RUN apt-get --yes install apt-utils
+RUN apt-get --yes install sudo
+RUN apt-get --yes install git
+RUN apt-get --yes install build-essential
+RUN apt-get --yes install gdb
+RUN apt-get --yes install cmake 
+
+ARG NAME=docker
+ARG PASSWD=docker
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g $GID -o $NAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $NAME
+RUN usermod -a -G sudo $NAME
+RUN echo "root:$PASSWD" | chpasswd
+RUN echo "$NAME:$PASSWD" | chpasswd
+USER $NAME
+WORKDIR /home/$NAME
