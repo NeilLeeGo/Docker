@@ -10,6 +10,7 @@ RUN apt-get update
 RUN apt-get --yes install apt-utils
 RUN apt-get --yes install sudo
 RUN apt-get --yes install git
+RUN apt-get update
 RUN apt-get --yes install build-essential bc
 RUN apt-get --yes install lbzip2
 RUN apt-get --yes install binutils
@@ -23,9 +24,10 @@ RUN apt-get --yes install abootimg
 RUN apt-get --yes install libxml2-utils
 RUN apt-get --yes install dosfstools
 
+RUN apt-get update
 RUN apt-get --yes install python
 RUN apt-get --yes install python3
-RUN apt-get --yes install python-pip
+RUN apt-get --yes install python3-pip
 RUN sudo python3 -m pip install pyyaml
 RUN apt-get --yes install curl
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
@@ -33,10 +35,11 @@ RUN sudo python2 get-pip.py
 RUN sudo python2 -m pip install pyyaml
 
 #DEB Packing tools
-RUN apt-get install debmake
-RUN apt-get install dh-make
-RUN apt-get install software-properties-common 
-RUN apt-get install gnupg2
+RUN apt-get update
+RUN apt-get --yes install debmake
+RUN apt-get --yes install dh-make
+RUN apt-get --yes install software-properties-common 
+RUN apt-get --yes install gnupg2
 
 ARG NAME=docker
 ARG PASSWD=docker
