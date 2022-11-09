@@ -55,7 +55,7 @@ sleep 3
 RUN='./run.sh'
 echo '# !/bin/bash' > ${RUN}
 echo '' >> ${RUN}
-echo 'docker run --privileged -it -v /dev/bus/usb:/dev/bus/usb -v '${WORKDIR}':/home/'${NAME}' nvidia:latest' >> ${RUN}
+echo 'docker run --privileged -it -v /dev/bus/usb:/dev/bus/usb -v /etc/udev:/etc/udev -v '${WORKDIR}':/home/'${NAME}/Workspace' nvidia:latest' >> ${RUN}
 chmod +x ${RUN}
 
 docker build --build-arg OS=${OS} --build-arg NAME=${NAME} --build-arg PASSWD=${PASSWD} -t nvidia -f nvidia.docker ./

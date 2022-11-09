@@ -10,15 +10,33 @@ RUN apt-get update
 RUN apt-get --yes install apt-utils
 RUN apt-get --yes install sudo
 RUN apt-get --yes install git
-RUN apt-get --yes install python
 RUN apt-get --yes install build-essential bc
 RUN apt-get --yes install lbzip2
 RUN apt-get --yes install binutils
 RUN apt-get --yes install cpio
 RUN apt-get --yes install binfmt-support
 RUN apt-get --yes install qemu-user-static
-RUN apt-get --yes install python3
+
 RUN apt-get --yes install xxd
+RUN apt-get --yes install sshpass
+RUN apt-get --yes install abootimg
+RUN apt-get --yes install libxml2-utils
+RUN apt-get --yes install dosfstools
+
+RUN apt-get --yes install python
+RUN apt-get --yes install python3
+RUN apt-get --yes install python-pip
+RUN sudo python3 -m pip install pyyaml
+RUN apt-get --yes install curl
+RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+RUN sudo python2 get-pip.py
+RUN sudo python2 -m pip install pyyaml
+
+#DEB Packing tools
+sudo apt-get install debmake
+sudo apt-get install dh-make
+sudo apt-get install software-properties-common 
+sudo apt-get install gnupg2
 
 ARG NAME=docker
 ARG PASSWD=docker
@@ -35,4 +53,5 @@ RUN echo "$NAME:$PASSWD" | chpasswd
 RUN echo "update-binfmts --enable" >> /root/.bashrc
 RUN echo "su ${NAME}" >> /root/.bashrc
 #USER $NAME
-WORKDIR /home/$NAME
+RUN mkdir /home/$NAME/Workspace
+WORKDIR /home/$NAME/Workspace
