@@ -33,10 +33,10 @@ RUN sudo python2 get-pip.py
 RUN sudo python2 -m pip install pyyaml
 
 #DEB Packing tools
-sudo apt-get install debmake
-sudo apt-get install dh-make
-sudo apt-get install software-properties-common 
-sudo apt-get install gnupg2
+RUN apt-get install debmake
+RUN apt-get install dh-make
+RUN apt-get install software-properties-common 
+RUN apt-get install gnupg2
 
 ARG NAME=docker
 ARG PASSWD=docker
