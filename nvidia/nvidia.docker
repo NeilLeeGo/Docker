@@ -6,6 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Taipei
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Nvidia Flash environment
 RUN apt-get update
 RUN apt-get --yes install apt-utils
 RUN apt-get --yes install sudo
@@ -24,17 +25,31 @@ RUN apt-get --yes install abootimg
 RUN apt-get --yes install libxml2-utils
 RUN apt-get --yes install dosfstools
 
+# Python for Nvidia Flash environment & Nvidia UEFI
 RUN apt-get update
 RUN apt-get --yes install python
 RUN apt-get --yes install python3
+RUN apt-get --yes install python3-setuptools
 RUN apt-get --yes install python3-pip
+RUN apt-get --yes install python3-wheel
+RUN apt-get --yes install python3-virtualenv
 RUN sudo python3 -m pip install pyyaml
 RUN apt-get --yes install curl
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
 RUN sudo python2 get-pip.py
 RUN sudo python2 -m pip install pyyaml
 
-#DEB Packing tools
+# Nvidia UEFI
+RUN apt-get --yes install wget
+RUN apt-get --yes install dirmngr apt-transport-https ca-certificates
+RUN apt-add-repository 'deb https://download.mono-project.com/repo/ubuntu stable-focal main'
+RUN apt-get update
+RUN apt-get --yes install mono-complete 
+RUN apt-get --yes install gcc-aarch64-linux-gnu
+RUN apt-get --yes install uuid-dev
+RUN apt-get --yes install device-tree-compiler
+
+# DEB Packing tools
 RUN apt-get update
 RUN apt-get --yes install debmake
 RUN apt-get --yes install dh-make
