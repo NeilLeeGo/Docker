@@ -12,7 +12,7 @@ RUN apt-get --yes install apt-utils
 RUN apt-get --yes install sudo
 RUN apt-get --yes install git
 RUN apt-get update
-RUN apt-get --yes install build-essential bc
+RUN apt-get --yes install build-essential bc flex
 RUN apt-get --yes install lbzip2
 RUN apt-get --yes install binutils
 RUN apt-get --yes install cpio
@@ -42,6 +42,9 @@ RUN sudo python2 -m pip install pyyaml
 # Nvidia UEFI
 RUN apt-get --yes install wget
 RUN apt-get --yes install dirmngr apt-transport-https ca-certificates
+RUN apt-get --yes install software-properties-common 
+RUN apt-get --yes install gnupg2
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 RUN apt-add-repository 'deb https://download.mono-project.com/repo/ubuntu stable-focal main'
 RUN apt-get update
 RUN apt-get --yes install mono-complete 
@@ -70,6 +73,18 @@ RUN echo "$NAME:$PASSWD" | chpasswd
 # Then change to normal user to avoid breaking the mount folder's permission.
 RUN echo "update-binfmts --enable" >> /root/.bashrc
 RUN echo "su ${NAME}" >> /root/.bashrc
-#USER $NAME
+USER ${name}
 RUN mkdir /home/$NAME/Workspace
 WORKDIR /home/$NAME/Workspace
+
+# Nvidia UEFI
+USER root
+RUN mkdir /tmp/edkrepo -p
+RUN cd /tmp/edkrepo
+RUN wget https://github.com/tianocore/edk2-edkrepo/releases/download/edkrepo-v2.1.2/edkrepo-2.1.2.tar.gz
+RUN tar xf edkrepo-2.1.2.tar.gz
+RUN ./install.py --user ${NAME} --no-prompt
+RUN chown -R ${NAME}. /home/${NAME}/.edkrepo
+USER $NAME
+RUN edkrepo manifest-repos add nvidia https://github.com/NVIDIA/edk2-edkrepo-manifest.git main nvidia
+USER root
