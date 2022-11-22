@@ -12,7 +12,7 @@ RUN apt-get --yes install apt-utils
 RUN apt-get --yes install sudo
 RUN apt-get --yes install git
 RUN apt-get update
-RUN apt-get --yes install build-essential bc flex libssl-dev
+RUN apt-get --yes install build-essential bc flex libssl-dev kmod bison
 RUN apt-get --yes install lbzip2
 RUN apt-get --yes install binutils
 RUN apt-get --yes install cpio
