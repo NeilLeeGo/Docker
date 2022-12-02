@@ -1,4 +1,4 @@
-ARG OS=ubuntu:18.04
+ARG OS=ubuntu:20.04
 FROM ${OS}
 MAINTAINER Neil
 CMD ["/bin/bash"];
@@ -15,12 +15,14 @@ RUN apt-get update
 RUN apt-get --yes install build-essential bc
 RUN apt-get --yes install flex libssl-dev kmod bison
 RUN apt-get --yes install lz4
+RUN apt-get --yes install whiptail
 RUN apt-get --yes install libncurses5-dev libncursesw5-dev
 RUN apt-get --yes install lbzip2
 RUN apt-get --yes install binutils
 RUN apt-get --yes install cpio
 RUN apt-get --yes install binfmt-support
 RUN apt-get --yes install qemu-user-static
+RUN apt-get --yes install vim
 
 RUN apt-get update
 RUN apt-get --yes install xxd
